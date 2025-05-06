@@ -33,9 +33,11 @@ app.get('/',(request,response)=>{
         })
 })
 
-connectDB();
-
-app.listen(PORT,()=>{
-    console.log(`Server is running on port ${PORT}`);
+connectDB().then (()=>{
+    app.listen(PORT,()=>{
+        console.log(`Server is running on port ${PORT}`);
+    }
+    )
 }
 )
+

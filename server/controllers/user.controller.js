@@ -1,8 +1,12 @@
 // Importing user model and bcrypt for password hashing
 import UserModel from '../models/user.model.js';
+
 import bcrypt from 'bcrypt';
 
+
+
 export async function registerUserController(request, response) {
+    console.log(sendEmail); 
     try {
         const { name, email, password } = request.body;
 
@@ -35,38 +39,34 @@ export async function registerUserController(request, response) {
         };
 
         // Save the new user to the database
-        const newUser = new UserModel(payload);
-        const savedUser = await newUser.save();
+        const newUser = new UserModel(payload)
+        const save = await newUser.save()
 
-const verifyEmailUrl=`${process.env.FRONTEND_URL}/verify-email?code=${save?._id}`
+        const VerifyEmailUrl = `${process.env.FRONTEND_URL}/verify-email?code=${save?._id}`
 
-         const verifyEmaiil=await sendEmail({
-            sendTo:email,
-            subject:"Verify your email from Binkeyit",
-            html:verifyEmailTemplate({
+        const verifyEmail = await sendEmail({
+            sendTo : email,
+            subject : "Verify email from binkeyit",
+            html : verifyEmailTemplate({
                 name,
-                url:verifyEmailUrl
+                url : VerifyEmailUrl
             })
-         })
-return response.json({
-    message:"Email sent successfully",
-    error:false,
-    success:true,
-    data:save
+        })
 
-})
+        return response.json({
+            message : "User register successfully",
+            error : false,
+            success : true,
+            data : save
+        })
 
 
-        // Send success response
-        return response.status(201).json({
-            message: "User registered successfully.",
-            userId: savedUser._id,
-            success: true
-        });
+    
 
     } catch (error) {
         return response.status(500).json({
-            message: error.message || "Internal Server Error",
+            message: error.message || error,
+            error: true,
             success: false
         });
     }

@@ -1,76 +1,79 @@
-import { verify } from "jsonwebtoken";
 import mongoose from "mongoose";
 
-
-const userSchema= new mongoose.Schema({
-    name:{
-        type:String,
-        required:[true,"please enter your name"]
+const userSchema = new mongoose.Schema({
+    name : {
+        type : String,
+        required : [true,"Provide name"]
     },
-    email:{
-        type:String,
-        required:[true,"provide email"],
+    email : {
+        type : String,
+        required : [true, "provide email"],
+        unique : true
     },
-    avatar:{
-        type:String,
-        default:""
+    password : {
+        type : String,
+        required : [true, "provide password"]
     },
-    mobile:{
-        type:Number,
-        default:null
+    avatar : {
+        type : String,
+        default : ""
     },
-    refreshy_token :{
-        type:String,
-        default:""
+    mobile : {
+        type : Number,
+        default : null
     },
-    verify_email:{
-        type:Boolean,
-        default:false
+    refresh_token : {
+        type : String,
+        default : ""
     },
-    last_login_date :{
-        type:Date,
-        default:""
+    verify_email : {
+        type : Boolean,
+        default : false
     },
-    status :{
-        type: String,
-       enum :["active","inactive","Suspended"],
-       default:"active"
+    last_login_date : {
+        type : Date,
+        default : ""
     },
-    address_details:[
+    status : {
+        type : String,
+        enum : ["Active","Inactive","Suspended"],
+        default : "Active"
+    },
+    address_details : [
         {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Address"
+            type : mongoose.Schema.ObjectId,
+            ref : 'address'
         }
     ],
-    shopping_card:[
+    shopping_cart : [
         {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"cartProduct"
+            type : mongoose.Schema.ObjectId,
+            ref : 'cartProduct'
         }
     ],
-    orderHistory :[
+    orderHistory : [
         {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"order"
+            type : mongoose.Schema.ObjectId,
+            ref : 'order'
         }
     ],
-    forgto_password:{
-        type:String,
-        default:null
+    forgot_password_otp : {
+        type : String,
+        default : null
     },
-    forgot_passwrod_expiry:{
-        type:Date,
-        default:""
+    forgot_password_expiry : {
+        type : Date,
+        default : ""
     },
-    role :{
-        type:String,
-        enum:["ADMIN","USER"],
-        default:"USER"
-    },
-
+    role : {
+        type : String,
+        enum : ['ADMIN',"USER"],
+        default : "USER"
+    }
 },{
-    timestamps:true
+    timestamps : true
 })
 
-const UserModel=mongoose.model("User",userSchema);
-export default UserModel;
+const UserModel = mongoose.model("User",userSchema)
+
+export default UserModel
